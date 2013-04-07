@@ -43,7 +43,9 @@ public class JurnalServlet extends HttpServlet {
         PHOTO_TITLE,
         PHOTO_CAPTION,
         PASSWORD,
-        AUTHSUB
+        AUTHSUB,
+        GPS_LAT,
+        GPS_LONG,
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -109,7 +111,16 @@ public class JurnalServlet extends HttpServlet {
         myPhoto.setTitle(new PlainTextConstruct(params.get(RequestParameter.PHOTO_TITLE)));
         myPhoto.setDescription(new PlainTextConstruct(params.get(RequestParameter.PHOTO_CAPTION)));
         myPhoto.setClient("ctalau-jurnal-1");
+
         myPhoto.setMediaSource(new MediaStreamSource(file, "image/jpeg"));
+
+        if (params.containsKey(RequestParameter.GPS_LAT) &&
+                params.containsKey(RequestParameter.GPS_LONG)) {
+            myPhoto.setGeoLocation(
+                    Double.valueOf(params.get(RequestParameter.GPS_LAT)),
+                    Double.valueOf(params.get(RequestParameter.GPS_LONG)));
+        }
+
         return myPhoto;
     }
 
